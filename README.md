@@ -24,5 +24,5 @@ Respect this order when creating a deeplabel project:
 
 
 ## Creating a file with all txt labels (for darknet or import)
-In powershell admin run : `Set-ExecutionPolicy RemoteSigned`
+In powershell admin run : `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass`
 Then run .\script.ps1
