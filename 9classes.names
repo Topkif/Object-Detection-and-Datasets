@@ -2,8 +2,8 @@ robot
 ballon
 but
 poteau
-joueur_bleu
-joueur_rouge
+tag_bleu
+tag_rouge
 robot_rct
 humain
 cible
