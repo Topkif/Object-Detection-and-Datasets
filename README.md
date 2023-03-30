@@ -1,18 +1,21 @@
 # MSL-Dataset-Labeling
 ![RCT Logo](https://rct.univ-tln.fr/wp-content/uploads/IMG_0206-1.jpg)
 
-The dataset of robot's images containt 9 classes of object.
+The dataset of robot's images containt 12 classes of object.
 Respect this order when creating a deeplabel project:
 
 * robot
 * ballon
 * but
 * poteau
-* joueur_bleu
-* joueur_rouge
+* tag_bleu
+* tag_rouge
 * robot_rct
 * humain
+* brassard_rouge
+* brassard_bleu
 * cible
+* valise
 
 
 ## This dataset contains :
