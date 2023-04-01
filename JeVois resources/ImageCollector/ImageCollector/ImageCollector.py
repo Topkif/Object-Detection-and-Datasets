@@ -10,7 +10,6 @@ import datetime
 import os
 import subprocess
 
-
 class ImageCollector:
     # ###################################################################################################
     # Constructor
@@ -23,6 +22,8 @@ class ImageCollector:
         
         if not os.path.exists("/media/JeVois_captures"):
             all_partitions = os.popen("lsblk -o NAME,SIZE,MOUNTPOINT -x NAME | awk '{if ($2 ~ /[0-9]+G/) print $1}'").read().splitlines()
+            all_partitions = os.popen('lsblk -o NAME,MOUNTPOINT -x NAME | awk \'$2 == "" {print $1}\'').read().splitlines()
+
             for p in all_partitions:
                 jevois.sendSerial(p + ",")
             for partition in all_partitions:
@@ -30,18 +31,18 @@ class ImageCollector:
                 if "sd" in partition :
                     # check for different file system type of the partition
                     jevois.sendSerial("trying to mount as VFAT or exfat partion " + partition)
-                    if os.system("mount -t vfat /dev/{partition} /media/") == 0:
+                    if os.system("sudo mount -t vfat /dev/{partition} /media/") == 0:
                         jevois.sendSerial("mounted {}" .format(partition))
                         foundUSB = True
                         break
                     jevois.sendSerial("trying to mount as NTFS partion " + partition)
-                    if os.system("mount -t ntfs-3g /dev/{partition} /media/") == 0:
+                    if os.system("sudo mount -t ntfs-3g /dev/{partition} /media/") == 0:
                         jevois.sendSerial("mounted {}" .format(partition))
                         foundUSB = True
                         break
                     # For other file systems, use the default mount command
                     jevois.sendSerial("trying to mount as FAT32 partion " + partition)
-                    if os.system("mount /dev/{partition} /media/") == 0:
+                    if os.system("sudo mount /dev/{partition} /media/") == 0:
                         jevois.sendSerial("mounted {}" .format(partition))
                         foundUSB = True
                         break
