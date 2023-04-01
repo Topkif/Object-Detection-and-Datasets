@@ -21,28 +21,35 @@ class ImageCollector:
         foundUSB = False
         
         if not os.path.exists("/media/JeVois_captures"):
-            all_partitions = os.popen("lsblk -o NAME,SIZE,MOUNTPOINT -x NAME | awk '{if ($2 ~ /[0-9]+G/) print $1}'").read().splitlines()
+            # all_partitions = os.popen("lsblk -o NAME,SIZE,MOUNTPOINT -x NAME | awk '{if ($2 ~ /[0-9]+G/) print $1}'").read().splitlines()
             all_partitions = os.popen('lsblk -o NAME,MOUNTPOINT -x NAME | awk \'$2 == "" {print $1}\'').read().splitlines()
-
+            
+            # print all partitions
             for p in all_partitions:
                 jevois.sendSerial(p + ",")
+                
             for partition in all_partitions:
-                # if it contains sd like sda sdb
-                if "sd" in partition :
-                    # check for different file system type of the partition
-                    jevois.sendSerial("trying to mount as VFAT or exfat partion " + partition)
-                    if os.system("sudo mount -t vfat /dev/{partition} /media/") == 0:
+                # if it contains "sd" like sda, sdb, ... and if it is not already mounted, try to mount this partition
+                if "sd" in partition and not os.path.ismount("/dev/{partition}"):
+                    # try for different file system types
+                    jevois.sendSerial("trying to mount as VFAT/exfat partion " + partition)
+                    result = subprocess.run(["sudo", "mount", "-t", "vfat", "/dev/{}".format(partition), "/media/"], capture_output=True) 
+                    if result.returncode == 0: # success
                         jevois.sendSerial("mounted {}" .format(partition))
                         foundUSB = True
                         break
+                    
                     jevois.sendSerial("trying to mount as NTFS partion " + partition)
-                    if os.system("sudo mount -t ntfs-3g /dev/{partition} /media/") == 0:
+                    result = subprocess.run(["sudo", "mount", "-t", "ntfs-3g", "/dev/{}".format(partition), "/media/"], capture_output=True) 
+                    if result.returncode == 0: # success
                         jevois.sendSerial("mounted {}" .format(partition))
                         foundUSB = True
                         break
+                    
                     # For other file systems, use the default mount command
-                    jevois.sendSerial("trying to mount as FAT32 partion " + partition)
-                    if os.system("sudo mount /dev/{partition} /media/") == 0:
+                    jevois.sendSerial("trying to mount as FAT32/default partion " + partition)
+                    result = subprocess.run(["sudo", "mount", "/dev/{}".format(partition), "/media/"], capture_output=True) 
+                    if result.returncode == 0: # success
                         jevois.sendSerial("mounted {}" .format(partition))
                         foundUSB = True
                         break
@@ -104,6 +111,7 @@ class ImageCollector:
                     jevois.sendSerial("writing " + filename)
                     f.write(buf)
                     f.flush()
+                    f.close()
             else:
                 raise RuntimeError("USB removed")
 
@@ -143,5 +151,6 @@ class ImageCollector:
                     jevois.sendSerial("writing " + filename)
                     f.write(buf)
                     f.flush()
+                    f.close()
             else:
                 raise RuntimeError("USB removed")
