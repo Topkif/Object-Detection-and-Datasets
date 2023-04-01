@@ -105,11 +105,10 @@ class ImageCollector:
                     count = 0
                     break
 
-            buf = cv2.imencode('.jpg', inimg)[1]
-            if os.path.exists(os.path.dirname(filename)):
-                with open(filename, 'wb') as f:
-                    jevois.sendSerial("writing " + filename)
-                    f.write(buf)
+            if cv2.imwrite(filename, inimg):
+                jevois.sendSerial("writing " + filename)
+                with open(filename, 'rb') as f:
+                    os.fsync(f.fileno())
                     f.flush()
                     f.close()
             else:
@@ -145,11 +144,10 @@ class ImageCollector:
                     count = 0
                     break
 
-            buf = cv2.imencode('.jpg', inimg)[1]
-            if os.path.exists(os.path.dirname(filename)):
-                with open(filename, 'wb') as f:
-                    jevois.sendSerial("writing " + filename)
-                    f.write(buf)
+            if cv2.imwrite(filename, inimg):
+                jevois.sendSerial("writing " + filename)
+                with open(filename, 'rb') as f:
+                    os.fsync(f.fileno())
                     f.flush()
                     f.close()
             else:
