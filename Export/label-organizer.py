@@ -65,7 +65,7 @@ def split_data(mainTrainFolder, valSplitRatio, testSplitRatio, outputFolderPath)
         shutil.move(src_label_path, dst_label_path)
 
 if __name__ == '__main__':
-    mainFolderPath = "dataset" # the path is relative
+    mainFolderPath = "train" # the path is relative
     valSplitRatio = 0.2
     testSplitRatio = 0.1
     outputFolderPath = "output" # the path is relative
