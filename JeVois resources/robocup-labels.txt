@@ -1,6 +1,0 @@
-robot
-ballon
-but
-poteau
-robot-rct
-humain
