@@ -27,7 +27,7 @@ if prefix is None:  # User canceled the input
 # Open save file dialog
 txt_file = filedialog.asksaveasfilename(
     defaultextension=".txt",
-    initialfile="output.txt",
+    initialfile="_output.txt",
     title="Save the output file as",
     filetypes=[("Text files", "*.txt")],
 )
