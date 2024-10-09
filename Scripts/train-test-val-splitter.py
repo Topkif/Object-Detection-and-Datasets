@@ -12,8 +12,8 @@ root.withdraw()
 folder_path = filedialog.askdirectory(title="Select the folder containing the images")
 
 # Define the proportions for training, validation, and testing
-train_prop = 0.6
-val_prop = 0.4
+train_prop = 0.9
+val_prop = 0.1
 test_prop = 0
 
 # Ask the user to choose the output folder for the split datasets
