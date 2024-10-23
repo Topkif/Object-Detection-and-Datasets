@@ -1,5 +1,5 @@
 import os
-path_to_label_folder = "C:/Github/Object-Detection-and-Datasets/Datasets/but"
+path_to_label_folder = "C:/Users/TP-EO-7/Documents/Yolo/Dataset/Dataset/images/val"
 
 # Loop through all files in folder and subfolders
 for foldername, subfolders, filenames in os.walk(path_to_label_folder):
